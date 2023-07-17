@@ -20,17 +20,20 @@ public struct MainMenuOptions {
         settingsHandler: Handler? = nil,
         openHandler: Handler? = nil,
         showToggleSidebar: Bool = false,
-        windowMenuItems: [NSMenuItem] = []
+        windowMenuItems: [NSMenuItem] = [],
+        helpMenuItems: [NSMenuItem] = []
     ) {
         self.settingsHandler = settingsHandler
         self.openHandler = openHandler
         self.showToggleSidebar = showToggleSidebar
         self.windowMenuItems = windowMenuItems
+        self.helpMenuItems = helpMenuItems
     }
     public let settingsHandler: Handler?
     public let openHandler: Handler?
     public let showToggleSidebar: Bool
     public let windowMenuItems: [NSMenuItem]
+    public let helpMenuItems: [NSMenuItem]
 }
 
 public func createMainMenu(options: MainMenuOptions = MainMenuOptions()) -> NSMenu {
@@ -114,6 +117,8 @@ public func createMainMenu(options: MainMenuOptions = MainMenuOptions()) -> NSMe
             SeparatorItem()
             MenuItem("Bring All to Front").action(#selector(NSApplication.arrangeInFront(_:)))
         }.apply { NSApp.windowsMenu = $0.submenu }
-        MenuItem("Help").submenu { }.apply { NSApp.helpMenu = $0.submenu }
+        MenuItem("Help").submenu {
+            options.helpMenuItems
+        }.apply { NSApp.helpMenu = $0.submenu }
     }
 }
