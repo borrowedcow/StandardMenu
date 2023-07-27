@@ -18,18 +18,21 @@ private extension AnyMenuItem {
 public struct MainMenuOptions {
     public init(
         settingsHandler: Handler? = nil,
+        appMenuItems: [NSMenuItem] = [],
         openHandler: Handler? = nil,
         showToggleSidebar: Bool = false,
         windowMenuItems: [NSMenuItem] = [],
         helpMenuItems: [NSMenuItem] = []
     ) {
         self.settingsHandler = settingsHandler
+        self.appMenuItems = appMenuItems
         self.openHandler = openHandler
         self.showToggleSidebar = showToggleSidebar
         self.windowMenuItems = windowMenuItems
         self.helpMenuItems = helpMenuItems
     }
     public let settingsHandler: Handler?
+    public let appMenuItems: [NSMenuItem]
     public let openHandler: Handler?
     public let showToggleSidebar: Bool
     public let windowMenuItems: [NSMenuItem]
@@ -45,6 +48,7 @@ public func createMainMenu(options: MainMenuOptions = MainMenuOptions()) -> NSMe
         MenuItem(appName).submenu {
             MenuItem("About \(appName)")
                 .action(#selector(NSApplication.orderFrontStandardAboutPanel(_:)))
+            options.appMenuItems
             if let settingsHandler = options.settingsHandler {
                 SeparatorItem()
                 MenuItem("Settings…")
